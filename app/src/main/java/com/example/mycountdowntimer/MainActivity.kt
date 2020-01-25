@@ -7,12 +7,15 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.widget.EditText
+import kotlinx.android.synthetic.*
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var soundPool: SoundPool
     private var soundResId = 0
+    private var edittime:Long = 0
 
 
     inner class MyCountDownTimer(millisInFuture: Long, countDownInterval: Long) :
@@ -35,9 +38,16 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        timerText.text = "3:00"
-        val timer = MyCountDownTimer(3 * 60 * 1000, 100)
+
+
+        settingbutton.setOnClickListener {
+            val a:Int = Integer.parseInt(editText.text.toString())
+            edittime = a.toLong()
+            timerText.setText(editText.text.toString()+":00")
+        }
+
         playStop.setOnClickListener {
+            val timer = MyCountDownTimer(edittime * 60 * 1000, 100)
             timer.isRunning = when (timer.isRunning) {
                 true -> {
                     timer.cancel()
